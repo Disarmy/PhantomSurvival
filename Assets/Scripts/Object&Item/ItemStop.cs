@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemCoin : MonoBehaviour
+public class ItemStop : MonoBehaviour
 {
     public GameObject player;
     public float speed;
     public float distance = 0.3f;
+
     // Update is called once per frame
     void Update()
     {
@@ -35,9 +36,27 @@ public class ItemCoin : MonoBehaviour
         if(Mathf.Abs(dir.x) < distance && Mathf.Abs(dir.y) < distance)
         {
             //CoinÈ¹µæ
+            StopEnemy();
             Destroy(gameObject);
         }
     }
+
+    private void StopEnemy()
+    {
+        GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] spawners = GameObject.FindGameObjectsWithTag("Spawner");
+
+        for (int i = 0; i < enemys.Length; i++)
+        {
+            enemys[i].SendMessage("TimeStopFunc");
+        }
+
+        for (int i = 0; i < spawners.Length; i++)
+        {
+            spawners[i].SendMessage("TimeStopFunc");
+        }
+    }
+
     public void SetPlayer()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");

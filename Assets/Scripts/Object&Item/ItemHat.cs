@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemCoin : MonoBehaviour
+public class ItemHat : MonoBehaviour
 {
     public GameObject player;
     public float speed;
     public float distance = 0.3f;
+
     // Update is called once per frame
     void Update()
     {
@@ -35,8 +36,20 @@ public class ItemCoin : MonoBehaviour
         if(Mathf.Abs(dir.x) < distance && Mathf.Abs(dir.y) < distance)
         {
             //CoinÈ¹µæ
+            GainAllItems();
             Destroy(gameObject);
         }
+    }
+
+    private void GainAllItems()
+    {
+        GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
+
+        for(int i = 0; i < items.Length; i++)
+        {
+            items[i].SendMessage("SetPlayer");
+        }
+
     }
     public void SetPlayer()
     {

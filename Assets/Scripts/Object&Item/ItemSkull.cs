@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemCoin : MonoBehaviour
+public class ItemSkull : MonoBehaviour
 {
     public GameObject player;
     public float speed;
     public float distance = 0.3f;
+    public float attackDistance = 10.0f;
+
     // Update is called once per frame
     void Update()
     {
@@ -35,9 +37,25 @@ public class ItemCoin : MonoBehaviour
         if(Mathf.Abs(dir.x) < distance && Mathf.Abs(dir.y) < distance)
         {
             //CoinÈ¹µæ
+            KillEnemy();
             Destroy(gameObject);
         }
     }
+
+    private void KillEnemy()
+    {
+        Collider2D[] hit = Physics2D.OverlapCircleAll(transform.position, attackDistance);
+
+        for(int i = 0; i < hit.Length; i++)
+        {
+            if(hit[i].tag == "Enemy")
+            {
+                hit[i].GetComponent<EnemyController>().Die();
+            }
+        }
+
+    }
+
     public void SetPlayer()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");

@@ -12,6 +12,8 @@ public class EnemySpawner : MonoBehaviour
     public float spawnTime = 1f;
     public float spawnDistance = 5.0f;
     public int maxCount = 10;
+    public float stopTime = 5.0f;
+    public bool isStop = false;
 
     // Update is called once per frame
     void Start()
@@ -52,7 +54,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            if(m_queue.Count != 0)
+            if(m_queue.Count != 0 && !isStop)
             {
                 GameObject t_obj = GetQueue();
                 Vector2 point = new Vector2(player.transform.position.x, player.transform.position.y);
@@ -66,5 +68,16 @@ public class EnemySpawner : MonoBehaviour
         Vector2 randomPoint = (normalized ? center + Random.insideUnitCircle.normalized * radius : center + Random.insideUnitCircle * radius);
 
         return randomPoint;
+    }
+    public void TimeStopFunc()
+    {
+        StartCoroutine(TimeStop());
+    }
+
+    IEnumerator TimeStop()
+    {
+        isStop = true;
+        yield return new WaitForSeconds(stopTime);
+        isStop = false;
     }
 }
